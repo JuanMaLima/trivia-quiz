@@ -50,34 +50,34 @@ class OpenTriviaDB(GObject.GObject):
         self.token = "123"
 
     def load_local_questions(self, path=None, shuffle=True):
-    if path is None:
-        path = "questions.json"
+        if path is None:
+            path = "questions.json"
 
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except Exception as e:
-        print("Error leyendo el archivo:", e)
-        self.emit("connection-error")
-        return
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception as e:
+            print("Error leyendo el archivo:", e)
+            self.emit("connection-error")
+            return
 
-    self.questions = []
+        self.questions = []
 
-    for item in data:
-        question = Question(
-            item["question"],
-            item["category"],
-            item["difficulty"],
-            item["type"],
-            item["correct_answer"],
-            item["incorrect_answers"]
-        )
-        self.questions.append(question)
+        for item in data:
+            question = Question(
+                item["question"],
+                item.get("category", "Custom"),
+                item.get("difficulty", "medium"),
+                item.get("type", "multiple"),
+                item["correct_answer"],
+                item.get("incorrect_answers", [])
+            )
+            self.questions.append(question)
 
-    if shuffle:
-        random.shuffle(self.questions)
+        if shuffle:
+            random.shuffle(self.questions)
 
-    self.emit("questions-retrieved")
+        self.emit("questions-retrieved")
 
     def get_open_trivia_token(self):
         token_url = "https://opentdb.com/api_token.php?command=request"

@@ -103,13 +103,10 @@ class OpenTriviaDB(GObject.GObject):
             return 0
 
         self.emit('token-reset')
-
-    def get_new_trivia_questions_with_delay(self, amount=1, category=None, difficulty=None, question_type=None, token=None):
-        time.sleep(5.1)
-        self.get_new_trivia_questions(amount, category, difficulty, question_type, token)
-
+        
     def get_new_trivia_questions(self, amount=1, category=None, difficulty=None, question_type=None, token=None):
-        base_url = "https://opentdb.com/api.php"
+        # Ignora OpenTDB y carga siempre preguntas locales
+        self.load_local_questions("questions.json")
 
         if token == None:
             token = self.token

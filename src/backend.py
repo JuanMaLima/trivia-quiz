@@ -49,6 +49,10 @@ class OpenTriviaDB(GObject.GObject):
         self.questions = []
         self.token = "123"
 
+    def load_local_questions(self, path=None, shuffle=True):
+        ...
+        self.emit("questions-retrieved")
+
     def get_open_trivia_token(self):
         token_url = "https://opentdb.com/api_token.php?command=request"
 
